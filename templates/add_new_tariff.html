@@ -6,7 +6,7 @@
 <main>
     <div class="container">
         <h1 class="display-4 mb-4">Создать новый тариф</h1>
-        <form method="POST">
+        <form id="addTariffForm" action="{{ url_for('add_new_tariff_view') }}" method="POST" onsubmit="return validateForm()">
             <div class="form-group">
                 <label for="name">Название тарифа</label>
                 <input type="text" class="form-control" id="name" name="name" required>
@@ -23,4 +23,19 @@
         </form>
     </div>
 </main>
+
+<script>
+function validateForm() {
+    const name = document.getElementById('name').value;
+    const description = document.getElementById('description').value;
+    const price = document.getElementById('price').value;
+
+    if (!name || !description || !price) {
+        alert('Пожалуйста, заполните все поля.');
+        return false;
+    }
+
+    return true;
+}
+</script>
 {% endblock %}

@@ -2127,7 +2127,7 @@ JOIN Tariffs t ON a.tariff_id = t.tariff_id;
 -- Выборка данных из представления
 SELECT * FROM admin.view_customer_statistics;
 
--- Создание временной таблицы для временного хранения данных о клиентах
+-- 1. Создание временной таблицы
 CREATE TEMP TABLE temp_customers (
     customer_id SERIAL,
     first_name VARCHAR(30),
@@ -2135,6 +2135,24 @@ CREATE TEMP TABLE temp_customers (
     email VARCHAR(50),
     phone VARCHAR(15)
 );
+
+-- 2. Копирование данных из таблицы customers
+INSERT INTO temp_customers (customer_id, first_name, last_name, email, phone)
+SELECT customer_id, first_name, last_name, email, phone
+FROM customers;
+
+-- 3. Обработка данных
+-- 3.1. Выбор только активных клиентов
+DELETE FROM temp_customers
+WHERE customer_id NOT IN (SELECT customer_id FROM customers WHERE status = 'active');
+
+-- 3.2. Обновление контактной информации
+UPDATE temp_customers
+SET phone = '000-000-0000'
+WHERE email LIKE '%@email.com';
+
+-- 4. Экспорт данных в CSV файл
+COPY temp_customers TO 'F:\Python\Negative_technologies\export.csv' DELIMITER ',' CSV HEADER;
 
 -- Пример использования точки сохранения
 BEGIN;
@@ -2148,8 +2166,18 @@ ROLLBACK TO SAVEPOINT before_update;
 -- Подтверждение транзакции
 COMMIT;
 
--- Индексация таблицы Customers для ускорения поиска по email
+-- Индексация таблицы для ускорения поиска
 CREATE INDEX idx_customers_email ON Customers (email);
+CREATE INDEX idx_customers_name ON Customers (last_name, first_name);
+CREATE INDEX idx_customers_phone ON Customers (phone);
+
+CREATE INDEX idx_accounts_tariff_id ON admin.Accounts (tariff_id);
+
+CREATE INDEX idx_supportrequests_state ON SupportRequests (state);
+
+CREATE INDEX idx_employees_role ON admin.Employees (role);
+
+CREATE INDEX idx_tariffs_price ON Tariffs (price);
 
 -- Пример защиты от SQL-инъекций в PL/pgSQL функции (PL/pgSQL функции можно рассматривать как использование встроенного механизма PostgreSQL для защиты от SQL-инъекций, что эквивалентно использованию библиотек или фреймворков для обеспечения безопасности.)
 CREATE OR REPLACE FUNCTION admin.safe_check_balance(account_id INT) RETURNS DECIMAL AS $$
