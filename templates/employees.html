@@ -1,0 +1,44 @@
+{% extends 'index.html' %}
+
+{% block title %}Сотрудники{% endblock %}
+
+{% block content %}
+<main>
+    <div class="container mt-5">
+        <h1 class="display-5 fw-bold">Сотрудники</h1>
+        <p class="lead">Просмотр и управление сотрудниками.</p>
+        <div class="mb-3">
+            <label for="sort_by" class="form-label">Сортировать по:</label>
+            <select id="sort_by" class="form-select" onchange="location = this.value;">
+                <option value="?sort_by=employee_id" {% if sort_by == 'employee_id' %}selected{% endif %}>ID</option>
+                <option value="?sort_by=fullname" {% if sort_by == 'fullname' %}selected{% endif %}>ФИО</option>
+                <option value="?sort_by=email" {% if sort_by == 'email' %}selected{% endif %}>Email</option>
+                <option value="?sort_by=phone" {% if sort_by == 'phone' %}selected{% endif %}>Телефон</option>
+                <option value="?sort_by=role" {% if sort_by == 'role' %}selected{% endif %}>Роль</option>
+            </select>
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col"><a href="?sort_by=employee_id">ID</a></th>
+                    <th scope="col"><a href="?sort_by=fullname">ФИО</a></th>
+                    <th scope="col"><a href="?sort_by=email">Email</a></th>
+                    <th scope="col"><a href="?sort_by=phone">Телефон</a></th>
+                    <th scope="col"><a href="?sort_by=role">Роль</a></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for employee in employees %}
+                <tr>
+                    <th scope="row">{{ employee.id }}</th>
+                    <td>{{ employee.fullname }}</td>
+                    <td>{{ employee.email }}</td>
+                    <td>{{ employee.phone }}</td>
+                    <td>{{ employee.role }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</main>
+{% endblock %}

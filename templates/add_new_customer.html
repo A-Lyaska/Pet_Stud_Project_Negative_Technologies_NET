@@ -1,0 +1,43 @@
+{% extends 'index.html' %}
+
+{% block title %} Добавить нового клиента {% endblock %}
+{% block content %}
+<main>
+    <div class="container">
+        <h1 class="mt-5">Добавить нового клиента</h1>
+        <form action="{{ url_for('add_new_customer') }}" method="POST">
+            <div class="mb-3">
+                <label for="first_name" class="form-label">Имя</label>
+                <input type="text" class="form-control" id="first_name" name="first_name" required>
+            </div>
+            <div class="mb-3">
+                <label for="last_name" class="form-label">Фамилия</label>
+                <input type="text" class="form-control" id="last_name" name="last_name" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="phone" class="form-label">Телефон</label>
+                <input type="text" class="form-control" id="phone" name="phone" required>
+            </div>
+            <div class="mb-3">
+                <label for="address_id" class="form-label">ID адреса</label>
+                <input type="number" class="form-control" id="address_id" name="address_id" required>
+            </div>
+            <div class="mb-3">
+                <label for="created_at" class="form-label">Дата создания</label>
+                <input type="datetime-local" class="form-control" id="created_at" name="created_at" required>
+            </div>
+            <div class="mb-3">
+                <label for="tariff_id" class="form-label">ID тарифа</label>
+                <input type="number" class="form-control" id="tariff_id" name="tariff_id" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Добавить</button>
+        </form>
+    </div>
+</main>
+{% endblock %}
+
+

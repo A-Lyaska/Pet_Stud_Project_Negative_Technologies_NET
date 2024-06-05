@@ -1,0 +1,26 @@
+{% extends 'index.html' %}
+
+{% block title %} Счета клиентов {% endblock %}
+
+{% block content %}
+<main>
+    <div class="container">
+        <h1 class="display-4 mb-4">Счета клиентов</h1>
+        <div class="row">
+            {% for account in accounts %}
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Счет №{{ account.account_id }}</h5>
+                        <p class="card-text">Клиент: {{ account.customer_fullname }}</p>
+                        <p class="card-text">Тариф: {{ account.tariff_name }}</p>
+                        <p class="card-text">Баланс: {{ account.balance }}</p>
+                        <p class="card-text">Дата создания: {{ account.created_at }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'index.html' %}
+
+{% block title %} Статистика клиентов {% endblock %}
+
+{% block content %}
+<main>
+    <div class="container">
+        <h1 class="display-4 mb-4">Статистика клиентов</h1>
+        <div class="row">
+            {% for customer_stat in customer_stats %}
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Клиент №{{ customer_stat.customer_id }}</h5>
+                        <p class="card-text">Имя: {{ customer_stat.first_name }}</p>
+                        <p class="card-text">Фамилия: {{ customer_stat.last_name }}</p>
+                        <p class="card-text">Email: {{ customer_stat.email }}</p>
+                        <p class="card-text">Телефон: {{ customer_stat.phone }}</p>
+                        <p class="card-text">Тариф: {{ customer_stat.tariff_name }}</p>
+                        <p class="card-text">Баланс: {{ customer_stat.balance }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'index.html' %}
+
+{% block title %}Ручное внесение оплаты{% endblock %}
+
+{% block content %}
+<main>
+    <div class="container mt-5">
+        <h1 class="display-5 fw-bold">Ручное внесение оплаты</h1>
+        <form method="POST">
+            <div class="mb-3">
+                <label for="account_id" class="form-label">Выберите аккаунт</label>
+                <select class="form-select" id="account_id" name="account_id" required>
+                    {% for account in accounts %}
+                    <option value="{{ account.account_id }}">{{ account.customer.fullname }} - {{ account.tariff.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="amount" class="form-label">Сумма</label>
+                <input type="number" class="form-control" id="amount" name="amount" required>
+            </div>
+            <div class="mb-3">
+                <label for="payment_date" class="form-label">Дата платежа</label>
+                <input type="datetime-local" class="form-control" id="payment_date" name="payment_date" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Внести оплату</button>
+        </form>
+    </div>
+</main>
+{% endblock %}

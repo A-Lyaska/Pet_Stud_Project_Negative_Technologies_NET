@@ -1,0 +1,26 @@
+{% extends 'index.html' %}
+
+{% block title %}Создать новый тариф{% endblock %}
+
+{% block content %}
+<main>
+    <div class="container">
+        <h1 class="display-4 mb-4">Создать новый тариф</h1>
+        <form method="POST">
+            <div class="form-group">
+                <label for="name">Название тарифа</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Описание</label>
+                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="price">Цена</label>
+                <input type="number" step="0.01" class="form-control" id="price" name="price" required>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Создать тариф</button>
+        </form>
+    </div>
+</main>
+{% endblock %}

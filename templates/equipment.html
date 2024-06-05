@@ -1,0 +1,25 @@
+{% extends 'index.html' %}
+
+{% block title %} Оборудование клиентов {% endblock %}
+
+{% block content %}
+<main>
+    <div class="container">
+        <h1 class="display-4 mb-4">Оборудование у клиентов</h1>
+        <div class="row">
+            {% for item in equipment %}
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.equipment_name }}</h5>
+                        <p class="card-text">Описание: {{ item.description }}</p>
+                        <p class="card-text">Установлено у: {{ item.customer_fullname }}</p>
+                        <p class="card-text">Дата установки: {{ item.installed_at }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+{% endblock %}
