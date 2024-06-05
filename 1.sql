@@ -2199,6 +2199,8 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+
+CREATE EXTENSION plpython3u;
 -- Создание функции для генерации отчета на plpython
 CREATE OR REPLACE FUNCTION generate_customer_report() RETURNS TABLE (
     customer_id INT,
