@@ -1,5 +1,7 @@
 CREATE DATABASE negative_technologies;
 
+\с negative_technologies
+
 -- Таблица клиентов
 CREATE TABLE Customers (
     customer_id SERIAL PRIMARY KEY,
@@ -104,12 +106,18 @@ ADD FOREIGN KEY (customer_id) REFERENCES Customers(customer_id);
 CREATE USER admin WITH CREATEDB CREATEROLE PASSWORD 'Gi=j*X^OsD61e_Q`}s[';
 CREATE USER worker WITH PASSWORD '*+w9yk_CzAnKG>T=%O]5';
 
-CREATE USER admin1 WITH CREATEDB CREATEROLE PASSWORD crypt('Gi=j*X^OsD61e_Q`}s[', gen_salt('bf'));
-CREATE USER worker2 WITH PASSWORD crypt('*+w9yk_CzAnKG>T=%O]5', gen_salt('bf'));
-
 -- Назначение ролей и привилегий
 GRANT ALL PRIVILEGES ON SCHEMA admin TO admin;
 GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA admin TO worker;
+
+GRANT ALL PRIVILEGES ON TABLE Customers TO admin;
+GRANT ALL PRIVILEGES ON TABLE Tariffs TO admin;
+GRANT ALL PRIVILEGES ON TABLE admin.Accounts TO admin;
+GRANT ALL PRIVILEGES ON TABLE Equipment TO admin;
+GRANT ALL PRIVILEGES ON TABLE admin.Employees TO admin;
+GRANT ALL PRIVILEGES ON TABLE SupportRequests TO admin;
+GRANT ALL PRIVILEGES ON TABLE Cities TO admin;
+GRANT ALL PRIVILEGES ON TABLE admin.Addresses TO admin;
 
 CREATE TABLE Payments (
     payment_id SERIAL PRIMARY KEY,
@@ -2190,3 +2198,43 @@ BEGIN
     RETURN balance;
 END;
 $$ LANGUAGE plpgsql;
+
+-- Создание функции для генерации отчета на plpython
+CREATE OR REPLACE FUNCTION generate_customer_report() RETURNS TABLE (
+    customer_id INT,
+    first_name VARCHAR,
+    last_name VARCHAR,
+    email VARCHAR,
+    phone VARCHAR,
+    tariff_name VARCHAR,
+    balance DECIMAL,
+    equipment_name VARCHAR
+) AS $$
+import plpy
+
+query = """
+SELECT
+    c.customer_id,
+    c.first_name,
+    c.last_name,
+    c.email,
+    c.phone,
+    t.name AS tariff_name,
+    a.balance,
+    e.name AS equipment_name
+FROM
+    Customers c
+LEFT JOIN
+    admin.Accounts a ON c.customer_id = a.customer_id
+LEFT JOIN
+    Tariffs t ON a.tariff_id = t.tariff_id
+LEFT JOIN
+    Equipment e ON c.customer_id = e.customer_id
+"""
+
+result = plpy.execute(query)
+return result
+$$ LANGUAGE plpython3u;
+
+-- Вызов функции
+SELECT * FROM generate_customer_report();

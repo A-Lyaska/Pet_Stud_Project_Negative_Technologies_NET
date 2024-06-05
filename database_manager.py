@@ -1,7 +1,7 @@
 import psycopg2
 
 # Подключение к базе данных
-conn = psycopg2.connect(dbname='negative_technologies', user='postgres', password='Nik2104', host='localhost')
+conn = psycopg2.connect(dbname='negative_technologies', user='postgres', password='', host='localhost')
 cursor = conn.cursor()
 
 def request(sql_query, *params, count_output=1, fetch=True):
